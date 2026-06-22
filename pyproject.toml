@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "silc-toolkit"
+version = "0.1.0"
+description = "Advanced Python for Official Statistics — EU-SILC Analysis Toolkit"
+requires-python = ">=3.11"
+authors = [{ name = "Christian Kauth", email = "christian.kauth@unifr.ch" }]
+license = { text = "MIT" }
+keywords = ["official-statistics", "EU-SILC", "poverty", "inequality"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Programming Language :: Python :: 3.11",
+]
+
+# ── Day 1: OOP & Functional ──────────────────────────────────────────────────
+dependencies = [
+    "ipykernel>=6.0",    # required for VS Code kernel selection
+    "pydantic>=2.5",
+    "pandas>=2.1",
+    "pyarrow>=14.0",
+    # Notebook 02 will add: pytest, black, ruff, polars
+    # Notebook 03 will add: polars, pyarrow (already here)
+    # Notebook 04 will add: requests, beautifulsoup4, sqlalchemy
+    # Notebook 05 will add: numpy, scipy, statsmodels, scikit-learn, shap
+    # Notebook 06 will add: plotly, geopandas, matplotlib, mcp
+    # Notebook 07 will add: papermill, nbformat
+]
+
+[project.optional-dependencies]
+dev = [
+    # Added in notebook 02
+    # "pytest>=7.4",
+    # "pytest-cov>=4.1",
+    # "black>=23.0",
+    # "ruff>=0.3",
+]
+
+[project.urls]
+Repository = "https://github.com/..."
+
+[tool.hatch.build.targets.wheel]
+packages = ["silc_toolkit"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
