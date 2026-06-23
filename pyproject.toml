@@ -1,7 +1,6 @@
-# Day 1+2: adds testing tools and polars
-# New in notebook 02:
-#   + polars>=1.40
-#   + pytest, black, ruff (dev tools)
+# Day 1-3: polars already included
+# New in notebook 03:
+#   + matplotlib (Lorenz curve / inequality visualisation)
 
 [build-system]
 requires = ["hatchling"]
@@ -20,6 +19,7 @@ dependencies = [
     "pandas>=2.1",
     "pyarrow>=14.0",
     "polars>=1.40",
+    "matplotlib>=3.8",
 ]
 
 [project.optional-dependencies]
@@ -51,7 +51,6 @@ target-version = ["py311"]
 [tool.ruff]
 line-length = 88
 target-version = "py311"
-extend-exclude = ["*.ipynb"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]
@@ -59,7 +58,3 @@ ignore = ["E501"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["silc_toolkit"]
-
-[tool.ruff.format]
-quote-style = "double"   # default; matches black — explicit for clarity
-indent-style = "space"   # default
