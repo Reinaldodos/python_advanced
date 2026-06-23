@@ -1,6 +1,7 @@
 """
 Tests for silc_toolkit.indicators — AROP, Gini, S80/S20.
 """
+
 from __future__ import annotations
 
 import math
@@ -20,6 +21,7 @@ from silc_toolkit.indicators import (
 # median_income
 # ---------------------------------------------------------------------------
 
+
 def test_median_income_basic(small_wave):
     assert median_income(small_wave) == 9_000.0
 
@@ -38,15 +40,19 @@ def test_median_income_ignores_non_positive():
 # poverty_threshold
 # ---------------------------------------------------------------------------
 
+
 def test_poverty_threshold_default(small_wave):
     assert poverty_threshold(small_wave) == pytest.approx(5_400.0)
 
 
-@pytest.mark.parametrize("pct, expected", [
-    (0.50, 4_500.0),
-    (0.60, 5_400.0),
-    (0.70, 6_300.0),
-])
+@pytest.mark.parametrize(
+    "pct, expected",
+    [
+        (0.50, 4_500.0),
+        (0.60, 5_400.0),
+        (0.70, 6_300.0),
+    ],
+)
 def test_poverty_threshold_pct(small_wave, pct, expected):
     assert poverty_threshold(small_wave, pct) == pytest.approx(expected)
 
@@ -54,6 +60,7 @@ def test_poverty_threshold_pct(small_wave, pct, expected):
 # ---------------------------------------------------------------------------
 # arop_rate
 # ---------------------------------------------------------------------------
+
 
 def test_arop_rate_basic(small_wave):
     # 3 households (3_000, 4_000, 5_000) below threshold of 5_400
@@ -83,27 +90,29 @@ def test_arop_rate_weighted(small_wave):
     assert result == pytest.approx(6 / 13)
 
 
-@pytest.mark.parametrize("country_label, expected_range", [
-    ("LU", (0.05, 0.30)),
-    ("IE", (0.10, 0.30)),
-])
+@pytest.mark.parametrize(
+    "country_label, expected_range",
+    [
+        ("LU", (0.05, 0.30)),
+        ("IE", (0.10, 0.30)),
+    ],
+)
 def test_arop_rate_realistic_range(
     country_label,
     expected_range,
-    request #built-in pytest fixture
-    ):
+    request,  # built-in pytest fixture
+):
     """Integration test: AROP must be in a plausible range for each country."""
     incomes = request.getfixturevalue(f"{country_label.lower()}_incomes")
     rate = arop_rate(incomes)
     lo, hi = expected_range
-    assert lo <= rate <= hi, (
-        f"{country_label} AROP = {rate:.3f}, expected [{lo}, {hi}]"
-    )
+    assert lo <= rate <= hi, f"{country_label} AROP = {rate:.3f}, expected [{lo}, {hi}]"
 
 
 # ---------------------------------------------------------------------------
 # gini_coefficient
 # ---------------------------------------------------------------------------
+
 
 def test_gini_perfect_equality(perfect_equality):
     assert gini_coefficient(perfect_equality) == pytest.approx(0.0)
@@ -136,6 +145,7 @@ def test_gini_known_value():
 # ---------------------------------------------------------------------------
 # s80s20_ratio
 # ---------------------------------------------------------------------------
+
 
 def test_s80s20_perfect_equality():
     # All equal → ratio = 1.0

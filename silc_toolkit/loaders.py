@@ -4,6 +4,7 @@ CSV and pandas loaders for EU-SILC PUF data.
 All functions accept a ``data_dir`` argument so they work with any copy
 of the PUF, regardless of installation path.
 """
+
 from __future__ import annotations
 
 import csv
@@ -19,6 +20,7 @@ logger = logging.getLogger(__name__)
 H_COLS_MINIMAL = ["HB010", "HB020", "HB030", "HY010", "HY020", "HX040"]
 # Columns from the D (register) file — household weight and region
 D_COLS_MINIMAL = ["DB010", "DB020", "DB030", "DB040", "DB090"]
+
 
 def load_incomes(
     country: str,
@@ -41,13 +43,13 @@ def load_incomes(
         for i, row in enumerate(csv.DictReader(fh)):
             if max_rows is not None and i >= max_rows:
                 break
-            inc_str  = row.get("HY020", "").strip()
+            inc_str = row.get("HY020", "").strip()
             size_str = row.get("HX040", "").strip()
             if not inc_str or inc_str == "NA":
                 continue
             income = float(inc_str)
-            size   = max(1, int(float(size_str))) if size_str and size_str != "NA" else 1
-            equiv  = income / (1.0 + 0.5 * (size - 1))
+            size = max(1, int(float(size_str))) if size_str and size_str != "NA" else 1
+            equiv = income / (1.0 + 0.5 * (size - 1))
             if equiv >= min_income:
                 incomes.append(equiv)
     return incomes
@@ -81,7 +83,8 @@ def load_household_df(
         if "DB030" in df_d.columns and "HB030" in df_h.columns:
             df = df_h.merge(
                 df_d[["DB030", "DB090", "DB040"]],
-                left_on="HB030", right_on="DB030",
+                left_on="HB030",
+                right_on="DB030",
                 how="left",
             ).drop(columns="DB030", errors="ignore")
         else:
@@ -104,7 +107,10 @@ def load_household_df(
 
     logger.info(
         "Loaded %s %d: %d households, %d columns",
-        country, year, len(df), len(df.columns)
+        country,
+        year,
+        len(df),
+        len(df.columns),
     )
     return df
 

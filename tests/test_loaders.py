@@ -1,6 +1,7 @@
 """
 Tests for silc_toolkit.loaders.
 """
+
 from __future__ import annotations
 
 from pathlib import Path

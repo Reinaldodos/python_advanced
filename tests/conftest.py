@@ -1,6 +1,7 @@
 """
 pytest configuration and shared fixtures for silc_toolkit tests.
 """
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -10,6 +11,7 @@ import pytest
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture(scope="session")
 def data_dir() -> Path:
@@ -25,6 +27,7 @@ def data_dir() -> Path:
 def lu_incomes(data_dir) -> list[float]:
     """Luxembourg 2012 equivalised incomes (loaded once per session)."""
     from silc_toolkit.loaders import load_incomes
+
     return load_incomes("LU", 2012, data_dir)
 
 
@@ -32,12 +35,14 @@ def lu_incomes(data_dir) -> list[float]:
 def ie_incomes(data_dir) -> list[float]:
     """Ireland 2012 equivalised incomes."""
     from silc_toolkit.loaders import load_incomes
+
     return load_incomes("IE", 2012, data_dir)
 
 
 # ---------------------------------------------------------------------------
 # Small synthetic income lists for fast unit tests (no file I/O)
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture
 def perfect_equality() -> list[float]:
@@ -59,5 +64,4 @@ def small_wave() -> list[float]:
     60% threshold = 5_400
     At-risk households: 3_000, 4_000, 5_000 → AROP = 3/10 = 0.30
     """
-    return [3_000, 4_000, 5_000, 6_000, 8_000,
-            10_000, 12_000, 15_000, 20_000, 30_000]
+    return [3_000, 4_000, 5_000, 6_000, 8_000, 10_000, 12_000, 15_000, 20_000, 30_000]
