@@ -1,3 +1,8 @@
+# Day 1+2: adds testing tools and polars
+# New in notebook 02:
+#   + polars>=1.40
+#   + pytest, black, ruff (dev tools)
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -5,47 +10,56 @@ build-backend = "hatchling.build"
 [project]
 name = "silc-toolkit"
 version = "0.1.0"
-description = "Advanced Python for Official Statistics — EU-SILC Analysis Toolkit"
+description = "Advanced Python for Official Statistics -- EU-SILC Analysis Toolkit"
 requires-python = ">=3.11"
 authors = [{ name = "Christian Kauth", email = "christian.kauth@unifr.ch" }]
 license = { text = "MIT" }
-keywords = ["official-statistics", "EU-SILC", "poverty", "inequality"]
-classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Intended Audience :: Science/Research",
-    "Topic :: Scientific/Engineering :: Information Analysis",
-    "Programming Language :: Python :: 3.11",
-]
 
-# ── Day 1: OOP & Functional ──────────────────────────────────────────────────
 dependencies = [
-    "ipykernel>=6.0",    # required for VS Code kernel selection
     "pydantic>=2.5",
     "pandas>=2.1",
     "pyarrow>=14.0",
-    # Notebook 02 will add: pytest, black, ruff, polars
-    # Notebook 03 will add: polars, pyarrow (already here)
-    # Notebook 04 will add: requests, beautifulsoup4, sqlalchemy
-    # Notebook 05 will add: numpy, scipy, statsmodels, scikit-learn, shap
-    # Notebook 06 will add: plotly, geopandas, matplotlib, mcp
-    # Notebook 07 will add: papermill, nbformat
+    "polars>=1.40",
 ]
 
 [project.optional-dependencies]
 dev = [
-    # Added in notebook 02
-    # "pytest>=7.4",
-    # "pytest-cov>=4.1",
-    # "black>=23.0",
-    # "ruff>=0.3",
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "black>=23.0",
+    "ruff>=0.3",
 ]
 
 [project.urls]
-Repository = "https://github.com/..."
+Repository = "https://github.com/icon-institute/silc-toolkit"
 
 [tool.hatch.build.targets.wheel]
 packages = ["silc_toolkit"]
 
+[tool.hatch.build.targets.sdist]
+# Keep the source distribution lean — the PUF data is not part of the package
+exclude = ["data", "dist", "src"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-v --tb=short"
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+extend-exclude = ["*.ipynb"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["silc_toolkit"]
+
+[tool.ruff.format]
+quote-style = "double"   # default; matches black — explicit for clarity
+indent-style = "space"   # default
