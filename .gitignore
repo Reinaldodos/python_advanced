@@ -7,3 +7,4 @@ data
 *coverage*
 .scrape_cache/eurostat_silc_overview.html
 silc_database.db
+uv.lock
