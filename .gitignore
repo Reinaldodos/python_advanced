@@ -5,3 +5,4 @@ __pycache__/
 .env
 data
 *coverage*
+.scrape_cache/eurostat_silc_overview.html
