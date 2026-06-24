@@ -1,6 +1,9 @@
-# Day 1-3: polars already included
-# New in notebook 03:
-#   + matplotlib (Lorenz curve / inequality visualisation)
+# Day 4: adds web scraping and SQLAlchemy
+# New in notebook 04:
+#   + requests>=2.31
+#   + beautifulsoup4>=4.12
+#   + lxml>=5.4
+#   + sqlalchemy>=2.0
 
 [build-system]
 requires = ["hatchling"]
@@ -18,8 +21,11 @@ dependencies = [
     "pydantic>=2.5",
     "pandas>=2.1",
     "pyarrow>=14.0",
-    "polars>=1.40",
-    "matplotlib>=3.8",
+    "polars>=0.20",
+    "requests>=2.31",
+    "beautifulsoup4>=4.12",
+    "lxml>=5.4",
+    "sqlalchemy>=2.0",
 ]
 
 [project.optional-dependencies]
@@ -35,10 +41,6 @@ Repository = "https://github.com/icon-institute/silc-toolkit"
 
 [tool.hatch.build.targets.wheel]
 packages = ["silc_toolkit"]
-
-[tool.hatch.build.targets.sdist]
-# Keep the source distribution lean — the PUF data is not part of the package
-exclude = ["data", "dist", "src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
