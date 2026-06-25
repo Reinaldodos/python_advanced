@@ -12,3 +12,5 @@ uv.lock
 .scrape_cache/*
 *.html
 *.json
+reports/*
+figures/*
