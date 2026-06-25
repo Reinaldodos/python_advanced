@@ -1,11 +1,13 @@
-# Day 6: adds MCP server, Plotly, geopandas
-# New in notebook 06:
-#   + seaborn>=0.13
-#   + plotly>=5.18
-#   + geopandas>=0.14
-#   + mcp>=1.3
-#   + httpx>=0.26
-#   + pywin32>=306  (Windows only — required by mcp)
+# Day 7: adds papermill, nbformat for reproducible research + OpenAI for AI reports
+# New in notebook 07:
+#   + papermill>=2.5      (parametrised notebook execution)
+#   + nbformat>=5.9       (read/write notebook JSON)
+#   + nbconvert>=7.0      (notebook -> HTML/PDF rendering)
+#   + ipykernel>=6.0      (kernel for papermill)
+#   + ipywidgets>=8.0     (progress bars / widgets)
+#   + openai>=1.0         (GPT-5.5 narrative generation)
+#   + python-dotenv>=1.0  (load OPENAI_API_KEY from .env)
+#   + tabulate>=0.9       (DataFrame.to_markdown for prompts)
 
 [build-system]
 requires = ["hatchling"]
@@ -37,10 +39,15 @@ dependencies = [
     "seaborn>=0.13",
     "plotly>=5.18",
     "geopandas>=0.14",
-    "mcp[cli]>=1.3",
+    "mcp>=1.3",
     "httpx>=0.26",
-    "pywin32>=306; sys_platform=='win32'",
-    "nbformat>=4.2.0"
+    "papermill>=2.5",
+    "nbconvert>=7.0",
+    "ipykernel>=6.0",
+    "ipywidgets>=8.0",
+    "openai>=1.0",
+    "python-dotenv>=1.0",
+    "tabulate>=0.9",
 ]
 
 [project.optional-dependencies]
@@ -75,3 +82,4 @@ ignore = ["E501"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["silc_toolkit"]
+
