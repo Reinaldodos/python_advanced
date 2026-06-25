@@ -1,11 +1,11 @@
-# Day 5: adds NumPy, statsmodels, scikit-learn, SHAP
-# New in notebook 05:
-#   + numpy>=1.26
-#   + scipy>=1.11
-#   + statsmodels>=0.14
-#   + scikit-learn>=1.4
-#   + shap>=0.44
-#   + matplotlib>=3.8
+# Day 6: adds MCP server, Plotly, geopandas
+# New in notebook 06:
+#   + seaborn>=0.13
+#   + plotly>=5.18
+#   + geopandas>=0.14
+#   + mcp>=1.3
+#   + httpx>=0.26
+#   + pywin32>=306  (Windows only — required by mcp)
 
 [build-system]
 requires = ["hatchling"]
@@ -31,8 +31,16 @@ dependencies = [
     "scipy>=1.11",
     "statsmodels>=0.14",
     "scikit-learn>=1.4",
-    "shap>=0.44",
+    "shap<0.52",
     "matplotlib>=3.8",
+    "numba>=0.60",
+    "seaborn>=0.13",
+    "plotly>=5.18",
+    "geopandas>=0.14",
+    "mcp[cli]>=1.3",
+    "httpx>=0.26",
+    "pywin32>=306; sys_platform=='win32'",
+    "nbformat>=4.2.0"
 ]
 
 [project.optional-dependencies]
