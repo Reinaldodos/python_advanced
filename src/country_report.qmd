@@ -1,0 +1,110 @@
+---
+title: "EU-SILC Country Report"
+subtitle: "Poverty & Inequality Indicators"
+author: "ICON Advanced Python Course"
+date: today
+format:
+  html:
+    toc: true
+    toc-location: left
+    theme: cosmo
+    code-fold: true
+    code-tools: true
+    fig-align: center
+    tbl-cap-location: top
+  pdf:
+    toc: true
+jupyter: python3
+execute:
+  echo: false
+  warning: false
+---
+
+```{python}
+#| tags: [parameters]
+country = "LU"
+```
+
+```{python}
+from pathlib import Path
+import pandas as pd
+import matplotlib.pyplot as plt
+def find_project_root(s):
+    for c in [s, *s.parents]:
+        if (c / "pyproject.toml").exists():
+            return c
+    raise FileNotFoundError("pyproject.toml not found")
+PROJECT_ROOT = find_project_root(Path().resolve())
+DATA_DIR = PROJECT_ROOT / "data"
+from silc_toolkit import load_incomes, arop_rate, gini_coefficient, s80s20_ratio
+COUNTRY = country
+NAMES = {"BE": "Belgium", "ES": "Spain", "FR": "France", "EL": "Greece",
+         "HU": "Hungary", "IE": "Ireland", "LU": "Luxembourg", "SE": "Sweden"}
+COUNTRY_NAME = NAMES.get(COUNTRY, COUNTRY)
+records = []
+for year in range(2004, 2014):
+    try:
+        inc = load_incomes(COUNTRY, year, DATA_DIR)
+        if inc:
+            inc_s = sorted(inc); n = len(inc_s)
+            records.append({"Year": year, "N": n,
+                "Median": int(inc_s[n // 2]),
+                "AROP%": round(arop_rate(inc) * 100, 1),
+                "Gini": round(gini_coefficient(inc), 4),
+                "S80S20": round(s80s20_ratio(inc), 2)})
+    except FileNotFoundError:
+        pass
+df = pd.DataFrame(records)
+yr_range = f"{int(df['Year'].min())}-{int(df['Year'].max())}" if len(df) else "n/a"
+```
+
+## Overview
+
+This report presents poverty and inequality indicators for **`{python} COUNTRY_NAME`** (`{python} COUNTRY`), covering survey years `{python} yr_range`. All figures derive from the EU-SILC Public Use File (Eurostat) and should be read with the caution attached to sample-based estimates.
+
+::: {.callout-note}
+**Indicator glossary** — **AROP%**: at-risk-of-poverty rate (share below 60% of the national median income); **Gini**: Gini coefficient (0 = perfect equality, 1 = perfect inequality); **S80/S20**: income quintile share ratio (top 20% income share divided by bottom 20%).
+:::
+
+## Key indicators by year
+
+```{python}
+#| label: tbl-poverty
+#| tbl-cap: "Poverty and inequality indicators by survey year"
+df
+```
+
+## Trend analysis
+
+```{python}
+#| label: fig-trends
+#| fig-cap: "Evolution of the AROP rate, Gini coefficient and S80/S20 ratio"
+fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+specs = [("AROP%", "AROP rate (%)", "#003399"),
+         ("Gini", "Gini coefficient", "#cc3300"),
+         ("S80S20", "S80/S20 ratio", "#006633")]
+for ax, (col, label, clr) in zip(axes, specs):
+    ax.plot(df["Year"], df[col], marker="o", linewidth=2, color=clr)
+    ax.fill_between(df["Year"], df[col], alpha=0.10, color=clr)
+    ax.set_title(label, fontweight="bold")
+    ax.grid(True, alpha=0.3, linestyle="--")
+fig.suptitle(f"Poverty & Inequality Trends - {COUNTRY_NAME}", fontweight="bold")
+plt.tight_layout()
+plt.show()
+```
+
+## Summary
+
+```{python}
+#| output: asis
+if len(df):
+    first, last = df.iloc[0], df.iloc[-1]
+    verb = "rose" if last["AROP%"] > first["AROP%"] else "fell"
+    print(f"Between {int(first['Year'])} and {int(last['Year'])}, the "
+          f"at-risk-of-poverty rate {verb} from {first['AROP%']}% to "
+          f"{last['AROP%']}%, while the Gini coefficient moved from "
+          f"{first['Gini']} to {last['Gini']} and the S80/S20 ratio from "
+          f"{first['S80S20']} to {last['S80S20']}.")
+else:
+    print("No data available for this country in the EU-SILC PUF sample.")
+```
