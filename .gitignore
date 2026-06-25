@@ -9,3 +9,6 @@ data
 silc_database.db
 uv.lock
 *.png
+.scrape_cache/*
+*.html
+*.json
